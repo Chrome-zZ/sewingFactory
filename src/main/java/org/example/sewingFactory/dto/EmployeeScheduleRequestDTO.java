@@ -10,5 +10,5 @@ public class EmployeeScheduleRequestDTO {
     String login;
     LocalDate start;
     LocalDate end;
-    Enum<Shift> shiftEnum;
+    Shift shift;
 }

@@ -39,4 +39,8 @@ public class Employee {
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Schedule> schedule;
+
+    @JsonIgnore
+    @OneToMany(/*fetch = FetchType.EAGER, */mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<Task> tasks;
 }

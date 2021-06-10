@@ -1,5 +1,6 @@
 package org.example.sewingFactory.controller;
 
+import org.example.sewingFactory.dto.EmployeeDTO;
 import org.example.sewingFactory.model.Employee;
 import org.example.sewingFactory.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,10 @@ public class EmployeeController {
         return employeeService.getUsers();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{login}")
     @PreAuthorize("hasAuthority('read')")
-    public Employee getUserById(@PathVariable Long id) {
-        return employeeService.getUserById(id);
+    public EmployeeDTO getUserByLogin(@PathVariable String login) {
+        return employeeService.getUserByLogin(login);
     }
 
     @PostMapping

@@ -3,6 +3,7 @@ package org.example.sewingFactory.service;
 import org.example.sewingFactory.dto.EmployeeScheduleRequestDTO;
 import org.example.sewingFactory.dto.ScheduleDTO;
 import org.example.sewingFactory.model.Schedule;
+import org.example.sewingFactory.model.Shift;
 import org.example.sewingFactory.repo.EmployeeRepo;
 import org.example.sewingFactory.repo.ScheduleRepo;
 import org.example.sewingFactory.repo.TimePeriodRepo;
@@ -34,37 +35,28 @@ public class ScheduleService {
         return scheduleDTO;
     }
 
-    public Iterable<Schedule> getSchedules() {
-        return scheduleRepo.findAll();
-    }
-
-    public Schedule getScheduleById(Long id) {
-        return scheduleRepo.getOne(id);
-    }
-
-    public Iterable<Schedule> getUserScheduleByDate(EmployeeScheduleRequestDTO employeeScheduleRequestDTO) {
+    public List<EmployeeScheduleRequestDTO> getUserScheduleByDate(EmployeeScheduleRequestDTO employeeScheduleRequestDTO) {
         String userLogin = employeeScheduleRequestDTO.getLogin();
         LocalDate startDate = employeeScheduleRequestDTO.getStart();
         LocalDate endDate = employeeScheduleRequestDTO.getEnd();
+        Shift shift;
 
-        List<Schedule> resSchedule = new ArrayList<>();
+//        List<Schedule> resSchedule = new ArrayList<>();
+        List<EmployeeScheduleRequestDTO> employeeScheduleRequestDTOS = new ArrayList<>();
         for (Schedule schedule : scheduleRepo.findAll()) {
-            if ((schedule.getDate().getDayOfYear() >= startDate.getDayOfYear()) &&
-                    (schedule.getDate().getDayOfYear() <= endDate.getDayOfYear()) &&
-                    (schedule.getEmployee().getLogin().equals(userLogin))) {
-                resSchedule.add(schedule);
+            EmployeeScheduleRequestDTO employeeScheduleRequestDTO1 = new EmployeeScheduleRequestDTO();
+            boolean startCheck = schedule.getDate().getDayOfYear() >= startDate.getDayOfYear();
+            boolean loginCheck = schedule.getEmployee().getLogin().equals(userLogin);
+            if (startCheck && (schedule.getDate().getDayOfYear() <= endDate.getDayOfYear()) && loginCheck) {
+//                resSchedule.add(schedule);
+                shift = timePeriodRepo.getOne(schedule.getTimePeriod().getId()).getShift();
+                employeeScheduleRequestDTO1.setLogin(userLogin);
+                employeeScheduleRequestDTO1.setStart(schedule.getDate());
+                employeeScheduleRequestDTO1.setShift(shift);
+                employeeScheduleRequestDTO1.setEnd(null);
+                employeeScheduleRequestDTOS.add(employeeScheduleRequestDTO1);
             }
         }
-        return resSchedule;
+        return employeeScheduleRequestDTOS;
     }
-
-//    public Schedule getScheduleByUserName(String userName) {
-//        Schedule scheduleByName = null;
-//        for (Schedule schedule : getSchedules()) {
-//            if (schedule.getUsers().stream().findFirst().equals(userName)) {
-//                scheduleByName = schedule;
-//            }
-//        }
-//        return scheduleByName;
-//    }
 }

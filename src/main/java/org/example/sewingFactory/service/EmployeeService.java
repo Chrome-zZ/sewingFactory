@@ -1,6 +1,7 @@
 package org.example.sewingFactory.service;
 
 
+import org.example.sewingFactory.dto.EmployeeDTO;
 import org.example.sewingFactory.model.Employee;
 import org.example.sewingFactory.model.Status;
 import org.example.sewingFactory.repo.EmployeeRepo;
@@ -42,12 +43,17 @@ public class EmployeeService {
         return employeeRepo.save(newU);
     }
 
-    public Employee getUserById(Long id) {
+    public EmployeeDTO getUserByLogin(String login) {
 
-        String login = employeeRepo.findById(id).get().getLogin();
-
-        return employeeRepo.findByLogin(login).orElseThrow(() ->
+//        String login = employeeRepo.findById(id).get().getLogin();
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        Employee employee = employeeRepo.findByLogin(login).orElseThrow(() ->
                 new UsernameNotFoundException("User doesn't exists"));
+        employeeDTO.setLogin(employee.getLogin());
+        employeeDTO.setName(employee.getName());
+        employeeDTO.setSurname(employee.getSurname());
+        employeeDTO.setRole(employee.getRole().toString());
+        return employeeDTO;
     }
 
 //    public String getUserName(String login) {
