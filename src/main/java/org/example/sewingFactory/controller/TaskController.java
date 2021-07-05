@@ -1,6 +1,6 @@
 package org.example.sewingFactory.controller;
 
-import org.example.sewingFactory.model.Employee;
+import org.example.sewingFactory.dto.TaskDTO;
 import org.example.sewingFactory.model.Task;
 import org.example.sewingFactory.service.TaskService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +26,13 @@ public class TaskController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('write')")
-    public Task addTask(Task task) {
-        return taskService.addTask(task);
+    public Task addTask(@RequestBody TaskDTO taskDTO) throws Exception {
+           return taskService.addTask(taskDTO);
+    }
+
+    @PostMapping("/complete/{id}")
+    @PreAuthorize("hasAuthority('read')")
+    public void addCompletionPoint(@PathVariable Long id) {
+        taskService.completeTask(id);
     }
 }

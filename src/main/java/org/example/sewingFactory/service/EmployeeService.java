@@ -15,11 +15,9 @@ import java.util.List;
 @Service
 public class EmployeeService {
     private final EmployeeRepo employeeRepo;
-    private final ScheduleService scheduleService;
 
-    public EmployeeService(EmployeeRepo employeeRepo, ScheduleService scheduleService) {
+    public EmployeeService(EmployeeRepo employeeRepo) {
         this.employeeRepo = employeeRepo;
-        this.scheduleService = scheduleService;
     }
 
     protected PasswordEncoder passwordEncoder() {
@@ -45,7 +43,6 @@ public class EmployeeService {
 
     public EmployeeDTO getUserByLogin(String login) {
 
-//        String login = employeeRepo.findById(id).get().getLogin();
         EmployeeDTO employeeDTO = new EmployeeDTO();
         Employee employee = employeeRepo.findByLogin(login).orElseThrow(() ->
                 new UsernameNotFoundException("User doesn't exists"));
@@ -55,12 +52,6 @@ public class EmployeeService {
         employeeDTO.setRole(employee.getRole().toString());
         return employeeDTO;
     }
-
-//    public String getUserName(String login) {
-//        String firstName = userRepo.findByLogin(login).orElse(null).getName();
-//        String lastName = userRepo.findByLogin(login).orElse(null).getSurname();
-//        return firstName + " " + lastName;
-//    }
 
     public void deleteUser(Long id) {
         employeeRepo.deleteById(id);

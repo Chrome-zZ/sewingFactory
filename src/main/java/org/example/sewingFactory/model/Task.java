@@ -19,9 +19,9 @@ public class Task {
     @Enumerated(value = EnumType.STRING)
     private TaskType type;
     private LocalDate deadline;
-    private String complete;
+    private Boolean complete;
 
-    @ManyToOne(/*fetch = FetchType.EAGER*/cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "employee_login")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "employee_id")
     private Employee employee;
 }

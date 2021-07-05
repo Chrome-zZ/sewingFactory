@@ -18,7 +18,6 @@ public class UserDetailsServiceIpml implements UserDetailsService {
         this.employeeRepo = employeeRepo;
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Employee employee = employeeRepo.findByLogin(login).orElseThrow(() ->

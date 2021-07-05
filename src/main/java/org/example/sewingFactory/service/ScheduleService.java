@@ -40,14 +40,14 @@ public class ScheduleService {
         LocalDate startDate = employeeScheduleRequestDTO.getStart();
         LocalDate endDate = employeeScheduleRequestDTO.getEnd();
         Shift shift;
-
 //        List<Schedule> resSchedule = new ArrayList<>();
         List<EmployeeScheduleRequestDTO> employeeScheduleRequestDTOS = new ArrayList<>();
         for (Schedule schedule : scheduleRepo.findAll()) {
             EmployeeScheduleRequestDTO employeeScheduleRequestDTO1 = new EmployeeScheduleRequestDTO();
             boolean startCheck = schedule.getDate().getDayOfYear() >= startDate.getDayOfYear();
             boolean loginCheck = schedule.getEmployee().getLogin().equals(userLogin);
-            if (startCheck && (schedule.getDate().getDayOfYear() <= endDate.getDayOfYear()) && loginCheck) {
+            boolean endCheck = schedule.getDate().getDayOfYear() <= endDate.getDayOfYear();
+            if (startCheck && endCheck && loginCheck) {
 //                resSchedule.add(schedule);
                 shift = timePeriodRepo.getOne(schedule.getTimePeriod().getId()).getShift();
                 employeeScheduleRequestDTO1.setLogin(userLogin);

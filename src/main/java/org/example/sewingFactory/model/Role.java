@@ -9,7 +9,6 @@ public enum Role {
     SEAMSTRESS(Set.of(Permission.READ)),
     CUTTER(Set.of(Permission.READ)),
     DESIGNER(Set.of(Permission.READ)),
-//    USER(Set.of(Permission.READ)),
     ADMIN(Set.of(Permission.READ, Permission.WRITE));
 
     private final Set<Permission> permissions;
